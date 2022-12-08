@@ -161,3 +161,10 @@ WantedBy=multi-user.target
 ```
 
 The argument of the application specifies the location of the configuration file and is mandatory!
+
+Afterwards the config needs to be reloaded and the service needs to be enabled.
+
+```
+systemctl daemon-reload
+systemctl enable ble-publisher.service
+```
