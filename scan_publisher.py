@@ -51,19 +51,24 @@ class ScanDelegate(DefaultDelegate):
 
             print('collected data: ' + json_data)
 
-            if config['devices'].get(dev.addr) is None or config['devices'][dev.addr].get('ignore') is None or not config['devices'][dev.addr].get('ignore') is True:
-              topic = config['mqtt']['base_topic'] + '/' + dev_name
-              print('publishing to ' + topic)
-              client.publish(topic, json_data)
-            else:
-              print('not publishing device ' + dev_name + ' since it is ignored')
+            if 'mqtt' in config:
+              if config['devices'].get(dev.addr) is None or config['devices'][dev.addr].get('ignore') is None or not config['devices'][dev.addr].get('ignore') is True:
+                topic = config['mqtt']['base_topic'] + '/' + dev_name
+                print('publishing to ' + topic)
+                client.publish(topic, json_data)
+              else:
+                print('not publishing device ' + dev_name + ' since it is ignored')
 
 def on_mqtt_connect(client, userdata, flags, rc):
   print('connected with result code ' + str(rc))
 
-f = open('config.json')
-config = json.load(f)
-f.close()
+try:
+  f = open('config.json')
+  config = json.load(f)
+  f.close()
+except Exception as ex:
+  print('no configuration found - just listing devices')
+  config = json.loads('{}')
 
 if not 'devices' in config:
   print('no devices defined - using default empty')
@@ -72,27 +77,31 @@ if not 'devices' in config:
 scanDelegate = ScanDelegate()
 scanner = Scanner().withDelegate(scanDelegate)
 
-client = mqtt.Client()
-if 'user' in config['mqtt'] or 'password' in config['mqtt']:
-  print('using user and password')
-  if 'user' in config['mqtt']:
-    user = config['mqtt']['user']
-  else:
-    user = ''
-  if 'password' in config['mqtt']:
-    password = config['mqtt']['password']
-  else:
-    password = ''
-  client.username_pw_set(user, password)
+if 'mqtt' in config:
+  client = mqtt.Client()
+  if 'user' in config['mqtt'] or 'password' in config['mqtt']:
+    print('using user and password')
+    if 'user' in config['mqtt']:
+      user = config['mqtt']['user']
+    else:
+      user = ''
+    if 'password' in config['mqtt']:
+      password = config['mqtt']['password']
+    else:
+      password = ''
+    client.username_pw_set(user, password)
 
-client.on_connect = on_mqtt_connect
-client.connect(config['mqtt']['host'], config['mqtt']['port'], config['mqtt']['keepalive'])
+  client.on_connect = on_mqtt_connect
+  client.connect(config['mqtt']['host'], config['mqtt']['port'], config['mqtt']['keepalive'])
 
-try:
-  client.loop_start()
-except KeyboardInterrupt:
-  print('\nInterrupted')
-  sys.exit(0)
+  try:
+    client.loop_start()
+  except KeyboardInterrupt:
+    print('\nInterrupted')
+    sys.exit(0)
+else:
+  print('no mqtt configuration found - not publishing anything')
+
 
 while True:
     try:

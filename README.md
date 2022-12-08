@@ -49,7 +49,7 @@ configuration can be kept there without changes when updating the repository.
 }
 ```
 
-### `mqtt`
+### `mqtt` definition
 
 <dl>
 <dt><code>user</code></dt>
@@ -66,7 +66,7 @@ configuration can be kept there without changes when updating the repository.
 <dd>The topic name under which the device data will be published – mandatory. Each device gets a subpath under this topic.</dd>
 </dl>
 
-### `devices`
+### `devices` definition
 
 Objects of device mappings. The key of the object represents the mac address of the device. Mac addresses are printed
 to stdout when `scan_publisher.py` is started.
