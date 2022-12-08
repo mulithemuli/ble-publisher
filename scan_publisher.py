@@ -69,8 +69,6 @@ if not 'devices' in config:
   print('no devices defined - using default empty')
   config['devices'] = json.loads('{}')
 
-print(config)
-
 scanDelegate = ScanDelegate()
 scanner = Scanner().withDelegate(scanDelegate)
 
