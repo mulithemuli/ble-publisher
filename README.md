@@ -139,3 +139,25 @@ The data which will be published contains the following in JSON format:
 <dt><code>name</code></dt>
 <dd>The name of the device as string. Either the looked up friendly name from the configuration as in our example "livingroom" or the mac address when no name is specified.</dd>
 </dl>
+
+## Run as service
+
+To run this application as a service a .service file needs to be created in `/etc/systemd/system/`.
+
+This assumes the rpository has been cloned to `/opt/`
+
+Create `/etc/systemd/system/ble-publisher.service` with following content:
+
+```
+[Unit]
+Description=Temperature/Humidity scanner service for bluetooth sensors
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/ble-publisher/scan_publisher.py /opt/ble-publisher/config.json
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The argument of the application specifies the location of the configuration file and is mandatory!
