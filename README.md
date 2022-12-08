@@ -51,14 +51,19 @@ configuration can be kept there without changes when updating the repository.
 
 user
 : The username which is required to login to the broker – optional
+
 password
 : The password which is required to login to the broker – optional
+
 port
 : The port where the broker listens – mandatory
+
 host
 : The hostname or ip where the broker listens – mandatory
+
 keepalive
 : Keepalive setting for the mqtt connection – in seconds, mandatory. In most cases it is fine to leave this at 60 seconds.
+
 base_topic
 : The topic name under which the device data will be published – mandatory. Each device gets a subpath under this topic.
 
@@ -69,6 +74,7 @@ to stdout when `scan_publisher.py` is started.
 
 name
 : A friendly name of the device which will be used when publishing info to the broker – optional
+
 ignore
 : When set to `false` no information of this device will be published. This might be useful when the application runs on several hosts which all have the same device in range. So only one application will publish the info.
 
@@ -76,7 +82,7 @@ ignore
 
 #### Device without configuration
 
-For a base_topic `ble/temp` and a device with the mac address `aa:bb:cc:dd:ee:ff` `the info for that device is published under
+For a base_topic `ble/temp` and a device with the mac address `aa:bb:cc:dd:ee:ff` the info for that device is published under
 `ble/temp/aa:bb:cc:dd:ee:ff`.
 
 #### Device with configuration
@@ -117,15 +123,21 @@ The data which will be published contains the following in JSON format:
 
 mac
 : The physical address of the device as string. Like in our examples above "aa:bb:cc:dd:ee:ff"
+
 temperature
 : A floatingpoint number indicating the current measured temperature. Like 20.56
+
 humidity
 : A floatingpoint number indicating the current measured humidity. Like 53.88
+
 button
 : Indicator if the button of the device is currently pressed or not. Like "Off"
+
 battery
 : The current charge state of the battery in percent. Like 87
+
 uptime
 : The uptime of the device in seconds. Like 3272744
+
 name
 : The name of the device as string. Either the looked up friendly name from the configuration as in our example "livingroom" or the mac address when no name is specified.
