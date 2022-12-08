@@ -168,3 +168,39 @@ Afterwards the config needs to be reloaded and the service needs to be enabled.
 systemctl daemon-reload
 systemctl enable ble-publisher.service
 ```
+
+## Openhab configuration
+
+Add mqtt things
+
+```
+Bridge mqtt:broker:my-broker "My Broker" [ host="my-broker.local", secure=false, username="user", password="password"] {
+
+    Thing topic Temp_Humidity_Livingroom "MQTT Temperature Humidity" @ "Livingroom" {
+        Channels:
+            Type number : temperature "Air Temperature Living room" [ stateTopic="ble/temp/livingroom_2", transformationPattern="JSONPATH:$.temperature"]
+            Type number : humidity "Air Humidity Living room" [ stateTopic="ble/temp/livingroom_2", transformationPattern="JSONPATH:$.humidity"]
+            Type number : battery "Battery Temp Sensor Living room" [ stateTopic="ble/temp/livingroom_2", transformationPattern="JSONPATH:$.battery"]
+    }
+    Thing topic Temp_Humidity_Bedroom "MQTT Temperature Humidity" @ "Bedroom" {
+        Channels:
+            Type number : temperature "Air Temperature Bedroom" [ stateTopic="ble/temp/bedroom_1", transformationPattern="JSONPATH:$.temperature"]
+            Type number : humidity "Air Humidity Bedroom" [ stateTopic="ble/temp/bedroom_1", transformationPattern="JSONPATH:$.humidity"]
+            Type number : battery "Battery Temp Sensor Bedroom" [ stateTopic="ble/temp/bedroom_1", transformationPattern="JSONPATH:$.battery"]
+    }
+}
+```
+
+and mqq items
+
+```
+// Climate Living room
+Number:Temperature Temperature_Living_Room "Living room temperature" {channel="mqtt:topic:my-broker:Temp_Humidity_Livingroom:temperature"}
+Number Humidity_Living_Room "Living room humidity" {channel="mqtt:topic:my-broker:Temp_Humidity_Livingroom:humidity"}
+Number Battery_Temp_Sensor_Living_Room "Living room sensor temperature" (Batteries) {channel="mqtt:topic:my-broker:Temp_Humidity_Livingroom:battery"}
+
+// Climate Bedroom
+Number:Temperature Temperature_Bed_Room "Bedroom temperature" {channel="mqtt:topic:my-broker:Temp_Humidity_Bedroom:temperature"}
+Number Humidity_Bed_Room "Bedroom humidity" {channel="mqtt:topic:my-broker:Temp_Humidity_Bedroom:humidity"}
+Number Battery_Temp_Sensor_Bed_Room "Bedroom sensor temperature" (Batteries) {channel="mqtt:topic:my-broker:Temp_Humidity_Bedroom:battery"}
+```
