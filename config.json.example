@@ -1,0 +1,20 @@
+{
+  "mqtt": {
+    "user": "",
+    "password": "",
+    "port": 1883,
+    "host": "ble.mqtt.broker",
+    "keepalive": 60,
+    "base_topic": "ble/temp"
+  },
+  "devices": {
+    "published_device": {
+      "name": "living_room",
+      "ignore": false
+    },
+    "ignored_device": {
+      "name": "bedroom",
+      "ignore": true
+    }
+  }
+}
