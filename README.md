@@ -4,6 +4,8 @@ A small library to scan for bluetooth devices and publishes their results to a m
 
 <strong>Requires</strong> a custom `config.json` file which can be created based on `config.json.example` in this repository. More information below.
 
+<strong>Warning</strong> needs to be run uniquely on one machine. Otherwise the bluetooth scan will result in an error like `python failed to execute command 'scan'`
+
 Used and tested with [Brifit Bluetooth thermometer and hygrometer, wireless](https://www.amazon.de/dp/B08DLHFKT3?ref_=cm_sw_r_cp_ud_dp_GBFCDBT8C64ZBJYJWDWW)
 Probably the devices listed in https://github.com/iskalchev/ThermoBeacon-pyhap will work as well.
 
